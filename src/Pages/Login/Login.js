@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import img from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../context/AuthProvider";
+import SocialLogin from "../../Shared/SocialLogin/SocialLogin";
+import { JWTtokenByUserEmail } from "../../utilities/JWT";
 
 const Login = () => {
   const { signIn, user } = useContext(AuthContext);
@@ -23,18 +25,8 @@ const Login = () => {
           email: user.email,
         };
         // get JWT token
-        fetch(`https://gear-station-server.vercel.app/jwt`, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(currentUser),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            localStorage.setItem("gear-token", data.token);
-            navigate(from, { replace: true });
-          });
+        JWTtokenByUserEmail(currentUser);
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.err(error);
@@ -90,6 +82,10 @@ const Login = () => {
                 Please Register
               </Link>
             </p>
+            <div className="divider">OR</div>
+            <div className="form-control">
+              <SocialLogin></SocialLogin>
+            </div>
           </form>
         </div>
       </div>

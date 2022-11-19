@@ -1,11 +1,15 @@
 import React, { useContext } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import img from "../../assets/images/signup/signup.svg";
 import { AuthContext } from "../../context/AuthProvider";
+import SocialLogin from "../../Shared/SocialLogin/SocialLogin";
 
 const Signup = () => {
   const { createUser } = useContext(AuthContext);
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const from = "/";
 
   const handleSignupWithEmailAndPassword = (event) => {
     event.preventDefault();
@@ -17,6 +21,7 @@ const Signup = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+        navigate(from, { replace: true });
         // ...
       })
       .catch((error) => {
@@ -93,6 +98,10 @@ const Signup = () => {
                 Please Login
               </Link>
             </p>
+            <div className="divider">OR</div>
+            <div className="form-control">
+              <SocialLogin></SocialLogin>
+            </div>
           </form>
         </div>
       </div>
